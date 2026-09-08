@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#071020">
+<link rel="manifest" href="manifest.webmanifest">
+<title>CloudForge</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff}
+body{
+  background:
+  radial-gradient(circle at 60% 35%,rgba(0,154,255,.38),transparent 22%),
+  radial-gradient(circle at 32% 27%,rgba(90,75,255,.32),transparent 25%),
+  linear-gradient(135deg,#030812,#081a36 45%,#02050b 100%);
+}
+.desktop{position:absolute;inset:0 0 60px;padding:14px;display:flex;flex-direction:column;flex-wrap:wrap;align-content:flex-start;gap:4px}
+.icon{width:90px;height:86px;background:transparent;border:0;color:#fff;border-radius:9px;text-shadow:0 2px 5px #000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.icon:active{background:#fff2}
+.i{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:25px;box-shadow:0 8px 20px #0006}
+.fm{background:linear-gradient(135deg,#ff9d28,#e54e17)}
+.gt{background:#15181d}
+.cf{background:linear-gradient(135deg,#52d8ff,#625cff)}
+.chrome{background:linear-gradient(135deg,#2ebf6b,#448aff)}
+.folder{background:linear-gradient(135deg,#ffd35c,#df9c1f)}
+.settings{background:linear-gradient(135deg,#91a0ba,#3b475b)}
+.label{font-size:12px;text-align:center}
+.brand{position:absolute;right:5%;top:18%;text-align:right;text-shadow:0 5px 25px #000;pointer-events:none}
+.brand h1{font-size:min(8vw,72px);letter-spacing:4px;margin:0;color:#d8f5ff}
+.brand p{letter-spacing:8px;color:#72cfff}
+.task{position:absolute;left:0;right:0;bottom:0;height:60px;background:#0a1220e8;border-top:1px solid #ffffff20;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center}
+.task button{width:44px;height:44px;border:0;background:transparent;color:#fff;font-size:21px;border-radius:8px}
+.task button:active{background:#fff2}
+.clock{position:absolute;right:14px;font-size:12px;text-align:right}
+.start{position:absolute;left:50%;bottom:68px;transform:translateX(-50%);width:min(590px,90vw);height:min(500px,72vh);background:#101a2bef;border:1px solid #ffffff22;border-radius:15px;backdrop-filter:blur(25px);padding:22px;display:none;box-shadow:0 25px 80px #000a}
+.start.show{display:block}
+.search{background:#091221;border:1px solid #ffffff20;border-radius:9px;padding:12px;color:#aab7ca}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}
+.app{background:transparent;border:0;color:#fff;border-radius:10px;padding:11px}
+.app:active{background:#fff2}
+.app b{display:block;font-size:25px;margin-bottom:6px}
+.window{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,90vw);height:min(470px,72vh);background:#0e1829f2;border:1px solid #ffffff20;border-radius:14px;display:none;box-shadow:0 25px 80px #000a;overflow:hidden}
+.window.show{display:block}
+.bar{height:43px;padding-left:14px;display:flex;align-items:center;justify-content:space-between;background:#ffffff08;border-bottom:1px solid #ffffff14}
+.close{height:32px;width:45px;background:transparent;border:0;color:#fff;font-size:20px}
+.content{padding:22px;overflow:auto;height:calc(100% - 43px)}
+.card{background:#ffffff0b;border:1px solid #ffffff14;border-radius:13px;padding:16px;margin:12px 0}
+.muted{color:#a9b5ca;line-height:1.5}
+.ok{color:#5ce2a1}
+.warn{color:#ffd166}
+.btn{border:0;border-radius:9px;padding:12px 15px;background:#685cff;color:#fff;font-weight:bold;margin:5px}
+.btn2{background:#28344b}
+@media(max-width:650px){
+  .brand{opacity:.38}
+  .apps{grid-template-columns:repeat(3,1fr)}
+  .desktop{padding:8px}
+  .icon{width:75px}
+}
+</style>
+</head>
+<body>
+
+<div class="brand">
+  <h1>CLOUDFORGE</h1>
+  <p>SEU PC NA NUVEM</p>
+</div>
+
+<main class="desktop">
+  <button class="icon" onclick="openApp('FiveM')"><span class="i fm">F</span><span class="label">FiveM</span></button>
+  <button class="icon" onclick="openApp('GTA V')"><span class="i gt">V</span><span class="label">GTA V</span></button>
+  <button class="icon" onclick="openApp('Cloud PC')"><span class="i cf">☁</span><span class="label">Cloud PC</span></button>
+  <button class="icon" onclick="openApp('Navegador')"><span class="i chrome">🌐</span><span class="label">Navegador</span></button>
+  <button class="icon" onclick="openApp('Meus Arquivos')"><span class="i folder">📁</span><span class="label">Meus Arquivos</span></button>
+  <button class="icon" onclick="openApp('Configurações')"><span class="i settings">⚙</span><span class="label">Configurações</span></button>
+</main>
+
+<div class="start" id="start">
+  <div class="search">🔎 Pesquisar aplicativos e configurações</div>
+  <h3>Aplicativos</h3>
+  <div class="apps">
+    <button class="app" onclick="fromStart('FiveM')"><b>🎮</b>FiveM</button>
+    <button class="app" onclick="fromStart('GTA V')"><b>V</b>GTA V</button>
+    <button class="app" onclick="fromStart('Cloud PC')"><b>☁️</b>Cloud PC</button>
+    <button class="app" onclick="fromStart('Navegador')"><b>🌐</b>Navegador</button>
+    <button class="app" onclick="fromStart('Meus Arquivos')"><b>📁</b>Arquivos</button>
+    <button class="app" onclick="fromStart('Configurações')"><b>⚙️</b>Configurações</button>
+  </div>
+  <div class="card">
+    <b>CloudForge</b>
+    <p class="muted">Interface desktop para Android • modo demonstração</p>
+  </div>
+</div>
+
+<section class="window" id="window">
+  <div class="bar"><strong id="title"></strong><button class="close" onclick="closeWin()">×</button></div>
+  <div class="content" id="content"></div>
+</section>
+
+<footer class="task">
+  <button onclick="toggleStart()">▦</button>
+  <button onclick="openApp('Cloud PC')">☁</button>
+  <button onclick="openApp('Navegador')">🌐</button>
+  <button onclick="openApp('Meus Arquivos')">📁</button>
+  <button onclick="openApp('FiveM')">🎮</button>
+  <span class="clock" id="clock"></span>
+</footer>
+
+<script>
+const data={
+'FiveM':`<h1>🎮 FiveM</h1>
+<div class="card">
+  <b class="ok">Aplicativo preparado</b>
+  <p class="muted">A interface do FiveM está pronta. Quando houver um Windows Cloud com GPU, este botão poderá abrir o jogo real por streaming.</p>
+  <button class="btn" onclick="connectDemo()">Abrir FiveM</button>
+  <p id="status" class="muted"></p>
+</div>`,
+'GTA V':`<h1>V GTA V</h1>
+<div class="card">
+  <p class="muted">O GTA V será executado no futuro Windows Cloud. Por enquanto, esta é a interface de demonstração.</p>
+</div>`,
+'Cloud PC':`<h1>☁ Cloud PC</h1>
+<div class="card">
+  <b>Status</b>
+  <p class="warn">● Aguardando máquina Windows com GPU</p>
+  <p class="muted">Quando um host estiver disponível, ele será conectado aqui sem alterar a aparência do aplicativo.</p>
+</div>`,
+'Navegador':`<h1>🌐 Navegador</h1>
+<div class="card"><p class="muted">Área reservada para navegação dentro do ambiente CloudForge.</p></div>`,
+'Meus Arquivos':`<h1>📁 Meus Arquivos</h1>
+<div class="card">📁 Downloads</div>
+<div class="card">📁 Jogos</div>
+<div class="card">📁 CloudForge</div>`,
+'Configurações':`<h1>⚙ Configurações</h1>
+<div class="card"><b>Modo</b><p class="muted">Demonstração gratuita</p></div>
+<div class="card"><b>Sistema alvo</b><p class="muted">Windows Cloud + GTA V + FiveM</p></div>`
+};
+
+function openApp(n){
+  document.getElementById('start').classList.remove('show');
+  document.getElementById('title').textContent=n;
+  document.getElementById('content').innerHTML=data[n]||'';
+  document.getElementById('window').classList.add('show');
+}
+function fromStart(n){openApp(n)}
+function closeWin(){document.getElementById('window').classList.remove('show')}
+function toggleStart(){document.getElementById('start').classList.toggle('show')}
+function connectDemo(){
+  let e=document.getElementById('status');
+  const s=['Preparando CloudForge...','Procurando Cloud PC...','Windows Cloud ainda não conectado.','Modo demonstração concluído ✓'];
+  let i=0;e.textContent=s[0];
+  const t=setInterval(()=>{i++; if(i>=s.length){clearInterval(t);return;} e.textContent=s[i]},700);
+}
+function tick(){
+  let d=new Date();
+  document.getElementById('clock').innerHTML=
+    d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'<br>'+
+    d.toLocaleDateString('pt-BR');
+}
+tick();setInterval(tick,1000);
+if('serviceWorker'in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
