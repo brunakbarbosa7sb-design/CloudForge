@@ -1,40 +1,1386 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#071020">
-<link rel="manifest" href="manifest.webmanifest">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>CloudForge</title>
- <script src="cloud-config.js"></script> 
+
+<script src="cloud-config.js"></script>
+
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;color:#fff}
-body{
-  background:
-  radial-gradient(circle at 60% 35%,rgba(0,154,255,.38),transparent 22%),
-  radial-gradient(circle at 32% 27%,rgba(90,75,255,.32),transparent 25%),
-  linear-gradient(135deg,#030812,#081a36 45%,#02050b 100%);
+*{
+    box-sizing:border-box;
+    user-select:none;
 }
-.desktop{position:absolute;inset:0 0 60px;padding:14px;display:flex;flex-direction:column;flex-wrap:wrap;align-content:flex-start;gap:4px}
-.icon{width:90px;height:86px;background:transparent;border:0;color:#fff;border-radius:9px;text-shadow:0 2px 5px #000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
-.icon:active{background:#fff2}
-.i{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:25px;box-shadow:0 8px 20px #0006}
-.fm{background:linear-gradient(135deg,#ff9d28,#e54e17)}
-.gt{background:#15181d}
-.cf{background:linear-gradient(135deg,#52d8ff,#625cff)}
-.chrome{background:linear-gradient(135deg,#2ebf6b,#448aff)}
-.folder{background:linear-gradient(135deg,#ffd35c,#df9c1f)}
-.settings{background:linear-gradient(135deg,#91a0ba,#3b475b)}
-.label{font-size:12px;text-align:center}
-.brand{position:absolute;right:5%;top:18%;text-align:right;text-shadow:0 5px 25px #000;pointer-events:none}
-.brand h1{font-size:min(8vw,72px);letter-spacing:4px;margin:0;color:#d8f5ff}
-.brand p{letter-spacing:8px;color:#72cfff}
-.task{position:absolute;left:0;right:0;bottom:0;height:60px;background:#0a1220e8;border-top:1px solid #ffffff20;backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center}
-.task button{width:44px;height:44px;border:0;background:transparent;color:#fff;font-size:21px;border-radius:8px}
-.task button:active{background:#fff2}
-.clock{position:absolute;right:14px;font-size:12px;text-align:right}
-.start{position:absolute;left:50%;bottom:68px;transform:translateX(-50%);width:min(590px,90vw);height:min(500px,72vh);background:#101a2bef;border:1px solid #ffffff22;border-radius:15px;backdrop-filter:blur(25px);padding:22px;display:none;box-shadow:0 25px 80px #000a}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    color:#fff;
+    background:#06101f;
+}
+
+body{
+    background:
+        radial-gradient(circle at 70% 25%,#123b68 0%,transparent 35%),
+        linear-gradient(135deg,#071525,#0b2340 55%,#06101f);
+}
+
+/* LOGIN */
+
+#loginScreen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle at center,#153f70,#06101f 70%);
+    z-index:10000;
+}
+
+.loginBox{
+    width:360px;
+    max-width:90%;
+    padding:28px;
+    border:1px solid #2f78b7;
+    border-radius:12px;
+    background:rgba(4,17,32,.94);
+    box-shadow:0 20px 60px #000;
+}
+
+.logo{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.logo span{
+    color:#4ab5ff;
+}
+
+.subtitle{
+    text-align:center;
+    color:#9db5c9;
+    margin-bottom:22px;
+}
+
+.loginBox input{
+    width:100%;
+    padding:13px;
+    margin:6px 0;
+    border-radius:7px;
+    border:1px solid #31506d;
+    background:#0b1d31;
+    color:white;
+    outline:none;
+}
+
+.loginBox button{
+    width:100%;
+    padding:12px;
+    margin-top:9px;
+    border:0;
+    border-radius:7px;
+    background:#168eea;
+    color:white;
+    font-weight:bold;
+}
+
+.secondary{
+    background:#20354a !important;
+}
+
+#loginMessage{
+    min-height:20px;
+    margin-top:12px;
+    color:#b8d5eb;
+    text-align:center;
+    font-size:13px;
+}
+
+/* DESKTOP */
+
+#desktop{
+    display:none;
+    position:fixed;
+    inset:0;
+    padding:18px 18px 55px;
+}
+
+.desktopIcon{
+    width:86px;
+    min-height:82px;
+    margin:4px;
+    display:inline-flex;
+    vertical-align:top;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    border-radius:8px;
+    font-size:13px;
+}
+
+.desktopIcon:active{
+    background:rgba(70,160,230,.25);
+}
+
+.iconImage{
+    width:45px;
+    height:45px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:6px;
+    font-size:34px;
+}
+
+/* TASKBAR */
+
+#taskbar{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:44px;
+    display:flex;
+    align-items:center;
+    background:rgba(3,10,19,.94);
+    border-top:1px solid #28445e;
+    z-index:5000;
+}
+
+#startButton{
+    width:54px;
+    height:44px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+}
+
+.taskTitle{
+    flex:1;
+    padding-left:8px;
+    color:#a9c9df;
+    font-size:13px;
+}
+
+#clock{
+    width:80px;
+    text-align:center;
+    font-size:12px;
+}
+
+/* START MENU */
+
+#startMenu{
+    display:none;
+    position:fixed;
+    left:8px;
+    bottom:48px;
+    width:280px;
+    padding:12px;
+    border-radius:10px;
+    background:rgba(5,17,30,.98);
+    border:1px solid #345a78;
+    box-shadow:0 15px 40px #000;
+    z-index:6000;
+}
+
+.startHeader{
+    padding:10px;
+    font-weight:bold;
+    border-bottom:1px solid #28455f;
+    margin-bottom:8px;
+}
+
+.menuItem{
+    padding:11px;
+    border-radius:6px;
+}
+
+.menuItem:active{
+    background:#173a58;
+}
+
+/* WINDOWS */
+
+.window{
+    display:none;
+    position:fixed;
+    width:78%;
+    height:70%;
+    left:11%;
+    top:10%;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid #315d7d;
+    background:#071523;
+    box-shadow:0 18px 55px #000;
+    z-index:3000;
+}
+
+.titlebar{
+    height:38px;
+    display:flex;
+    align-items:center;
+    padding-left:12px;
+    background:#102b43;
+    border-bottom:1px solid #31556e;
+}
+
+.titlebarTitle{
+    flex:1;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.winButton{
+    width:42px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.winButton:active{
+    background:#2b5270;
+}
+
+.closeButton:active{
+    background:#c42b1c;
+}
+
+.windowContent{
+    height:calc(100% - 38px);
+    padding:16px;
+    overflow:auto;
+}
+
+/* FILES */
+
+.toolbar{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.actionButton{
+    padding:9px 13px;
+    border:0;
+    border-radius:6px;
+    background:#147fc5;
+    color:white;
+}
+
+.fileRow{
+    display:flex;
+    align-items:center;
+    padding:11px;
+    margin-bottom:5px;
+    border-radius:6px;
+    background:#0d2134;
+}
+
+.fileName{
+    flex:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.deleteButton{
+    border:0;
+    border-radius:5px;
+    background:#6f2630;
+    color:white;
+    padding:7px 10px;
+}
+
+/* NOTES */
+
+#notesText{
+    width:100%;
+    height:calc(100% - 50px);
+    resize:none;
+    border:1px solid #31536d;
+    border-radius:7px;
+    background:#091b2c;
+    color:white;
+    padding:12px;
+    user-select:text;
+}
+
+/* CALCULATOR */
+
+#calcDisplay{
+    width:100%;
+    height:52px;
+    margin-bottom:10px;
+    background:#07111c;
+    border:1px solid #35566e;
+    color:white;
+    font-size:22px;
+    text-align:right;
+    padding:10px;
+}
+
+.calcGrid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+}
+
+.calcGrid button{
+    padding:14px;
+    border:0;
+    border-radius:5px;
+    background:#18364d;
+    color:white;
+    font-size:17px;
+}
+
+/* CURSOR */
+
+#cursor{
+    position:fixed;
+    width:18px;
+    height:24px;
+    left:50%;
+    top:50%;
+    z-index:9999;
+    pointer-events:none;
+    filter:drop-shadow(1px 2px 2px #000);
+}
+
+.cursorArrow{
+    width:0;
+    height:0;
+    border-top:18px solid white;
+    border-right:11px solid transparent;
+    transform:rotate(-25deg);
+}
+
+/* STATUS */
+
+.cloudStatus{
+    padding:8px 10px;
+    margin-bottom:10px;
+    border-radius:6px;
+    background:#0d273c;
+    color:#9fd5f8;
+    font-size:13px;
+}
+
+.empty{
+    color:#8da7b9;
+    padding:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+    <div class="loginBox">
+        <div class="logo">Cloud<span>Forge</span></div>
+        <div class="subtitle">Meu computador na nuvem</div>
+
+        <input id="email" type="email" placeholder="E-mail">
+        <input id="password" type="password" placeholder="Senha">
+
+        <button onclick="signIn()">Entrar</button>
+        <button class="secondary" onclick="signUp()">Criar conta</button>
+
+        <div id="loginMessage"></div>
+    </div>
+</div>
+
+<div id="desktop">
+
+    <div class="desktopIcon" onclick="openWindow('filesWindow');loadFiles()">
+        <div class="iconImage">📁</div>
+        Arquivos
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('downloadsWindow');loadFiles()">
+        <div class="iconImage">⬇</div>
+        Downloads
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('notesWindow');loadNotes()">
+        <div class="iconImage">📝</div>
+        Notas
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('trashWindow');loadTrash()">
+        <div class="iconImage">🗑</div>
+        Lixeira
+    </div>
+
+    <div class="desktopIcon" onclick="openExternal('https://open.spotify.com')">
+        <div class="iconImage">♫</div>
+        Spotify
+    </div>
+
+    <div class="desktopIcon" onclick="openExternal('https://www.youtube.com')">
+        <div class="iconImage">▶</div>
+        YouTube
+    </div>
+
+    <div class="desktopIcon" onclick="openExternal('https://discord.com/app')">
+        <div class="iconImage">◉</div>
+        Discord
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('browserWindow')">
+        <div class="iconImage">🌐</div>
+        Navegador
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('calculatorWindow')">
+        <div class="iconImage">⌨</div>
+        Calculadora
+    </div>
+
+    <div class="desktopIcon" onclick="openAndroidSettings()">
+        <div class="iconImage">⚙</div>
+        Configurações
+    </div>
+
+    <div class="desktopIcon" onclick="openWindow('appsWindow')">
+        <div class="iconImage">▦</div>
+        Aplicativos
+    </div>
+
+</div>
+
+<!-- ARQUIVOS -->
+
+<div class="window" id="filesWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">CloudForge — Arquivos</div>
+        <div class="winButton" onclick="minimizeWindow('filesWindow')">—</div>
+        <div class="winButton" onclick="maximizeWindow('filesWindow')">□</div>
+        <div class="winButton closeButton" onclick="closeWindow('filesWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <div class="cloudStatus">☁ Armazenamento CloudForge</div>
+
+        <div class="toolbar">
+            <button class="actionButton" onclick="pickCloudFile()">
+                Enviar arquivo
+            </button>
+
+            <button class="actionButton" onclick="loadFiles()">
+                Atualizar
+            </button>
+        </div>
+
+        <div id="filesList"></div>
+    </div>
+</div>
+
+<!-- DOWNLOADS -->
+
+<div class="window" id="downloadsWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Downloads</div>
+        <div class="winButton" onclick="minimizeWindow('downloadsWindow')">—</div>
+        <div class="winButton" onclick="maximizeWindow('downloadsWindow')">□</div>
+        <div class="winButton closeButton" onclick="closeWindow('downloadsWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <div class="cloudStatus">
+            Os arquivos do CloudForge ficam armazenados na nuvem.
+        </div>
+        <div id="downloadsList"></div>
+    </div>
+</div>
+
+<!-- NOTAS -->
+
+<div class="window" id="notesWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Notas</div>
+        <div class="winButton" onclick="minimizeWindow('notesWindow')">—</div>
+        <div class="winButton" onclick="maximizeWindow('notesWindow')">□</div>
+        <div class="winButton closeButton" onclick="closeWindow('notesWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <div class="toolbar">
+            <button class="actionButton" onclick="saveNotes()">Salvar na nuvem</button>
+        </div>
+
+        <textarea id="notesText"
+                  placeholder="Digite suas notas..."></textarea>
+    </div>
+</div>
+
+<!-- LIXEIRA -->
+
+<div class="window" id="trashWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Lixeira</div>
+        <div class="winButton" onclick="minimizeWindow('trashWindow')">—</div>
+        <div class="winButton" onclick="maximizeWindow('trashWindow')">□</div>
+        <div class="winButton closeButton" onclick="closeWindow('trashWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <div class="cloudStatus">
+            Registro de itens removidos do CloudForge.
+        </div>
+        <div id="trashList"></div>
+    </div>
+</div>
+
+<!-- NAVEGADOR -->
+
+<div class="window" id="browserWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Navegador</div>
+        <div class="winButton" onclick="minimizeWindow('browserWindow')">—</div>
+        <div class="winButton" onclick="maximizeWindow('browserWindow')">□</div>
+        <div class="winButton closeButton" onclick="closeWindow('browserWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <input id="browserAddress"
+               value="https://www.google.com"
+               style="width:75%;padding:10px;background:#0b1d31;color:white;border:1px solid #31506d">
+
+        <button class="actionButton" onclick="goBrowser()">Ir</button>
+    </div>
+</div>
+
+<!-- CALCULADORA -->
+
+<div class="window" id="calculatorWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Calculadora</div>
+        <div class="winButton" onclick="minimizeWindow('calculatorWindow')">—</div>
+        <div class="winButton closeButton" onclick="closeWindow('calculatorWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <input id="calcDisplay" readonly>
+
+        <div class="calcGrid">
+            <button onclick="calc('7')">7</button>
+            <button onclick="calc('8')">8</button>
+            <button onclick="calc('9')">9</button>
+            <button onclick="calc('/')">÷</button>
+
+            <button onclick="calc('4')">4</button>
+            <button onclick="calc('5')">5</button>
+            <button onclick="calc('6')">6</button>
+            <button onclick="calc('*')">×</button>
+
+            <button onclick="calc('1')">1</button>
+            <button onclick="calc('2')">2</button>
+            <button onclick="calc('3')">3</button>
+            <button onclick="calc('-')">−</button>
+
+            <button onclick="calc('0')">0</button>
+            <button onclick="clearCalc()">C</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="calc('+')">+</button>
+        </div>
+    </div>
+</div>
+
+<!-- APPS -->
+
+<div class="window" id="appsWindow">
+    <div class="titlebar">
+        <div class="titlebarTitle">Aplicativos</div>
+        <div class="winButton" onclick="minimizeWindow('appsWindow')">—</div>
+        <div class="winButton closeButton" onclick="closeWindow('appsWindow')">×</div>
+    </div>
+
+    <div class="windowContent">
+        <p>Gerenciamento de aplicativos Android</p>
+
+        <button class="actionButton"
+                onclick="manageApp('com.spotify.music')">
+            Gerenciar Spotify
+        </button>
+
+        <button class="actionButton"
+                onclick="manageApp('com.google.android.youtube')">
+            Gerenciar YouTube
+        </button>
+
+        <button class="actionButton"
+                onclick="manageApp('com.discord')">
+            Gerenciar Discord
+        </button>
+    </div>
+</div>
+
+<!-- START -->
+
+<div id="startMenu">
+    <div class="startHeader">CloudForge</div>
+
+    <div class="menuItem" onclick="openWindow('filesWindow');loadFiles()">
+        📁 Arquivos
+    </div>
+
+    <div class="menuItem" onclick="openWindow('notesWindow');loadNotes()">
+        📝 Notas
+    </div>
+
+    <div class="menuItem" onclick="openWindow('appsWindow')">
+        ▦ Aplicativos
+    </div>
+
+    <div class="menuItem" onclick="openAndroidSettings()">
+        ⚙ Configurações
+    </div>
+
+    <div class="menuItem" onclick="logout()">
+        ⏻ Sair
+    </div>
+</div>
+
+<div id="taskbar">
+    <div id="startButton" onclick="toggleStart()">⊞</div>
+    <div class="taskTitle">CloudForge</div>
+    <div id="clock"></div>
+</div>
+
+<div id="cursor">
+    <div class="cursorArrow"></div>
+</div>
+
+<script>
+const CLOUD = window.CLOUDFORGE_CLOUD || {};
+
+const SUPABASE_URL =
+    (CLOUD.SUPABASE_URL || "").replace(/\/$/, "");
+
+const SUPABASE_KEY =
+    CLOUD.SUPABASE_KEY || "";
+
+let session = {
+    token:"",
+    refresh:"",
+    user:null
+};
+
+function configured(){
+    return SUPABASE_URL &&
+           SUPABASE_KEY &&
+           !SUPABASE_URL.includes("COLE_AQUI") &&
+           !SUPABASE_KEY.includes("COLE_AQUI");
+}
+
+function message(text){
+    document.getElementById("loginMessage").textContent=text;
+}
+
+async function signIn(){
+
+    if(!configured()){
+        message("CloudForge ainda não está configurado.");
+        return;
+    }
+
+    const email=document.getElementById("email").value.trim();
+    const password=document.getElementById("password").value;
+
+    if(!email || !password){
+        message("Digite e-mail e senha.");
+        return;
+    }
+
+    message("Entrando...");
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+"/auth/v1/token?grant_type=password",
+            {
+                method:"POST",
+                headers:{
+                    "apikey":SUPABASE_KEY,
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data=await r.json();
+
+        if(!r.ok){
+            message(data.msg || data.error_description || "Não foi possível entrar.");
+            return;
+        }
+
+        session.token=data.access_token || "";
+        session.refresh=data.refresh_token || "";
+        session.user=data.user || null;
+
+        if(!session.user){
+            message("Sessão inválida.");
+            return;
+        }
+
+        syncNativeSession();
+
+        document.getElementById("loginScreen").style.display="none";
+        document.getElementById("desktop").style.display="block";
+
+        loadFiles();
+
+    }catch(e){
+        message("Erro de conexão com a nuvem.");
+    }
+}
+
+async function signUp(){
+
+    if(!configured()){
+        message("CloudForge ainda não está configurado.");
+        return;
+    }
+
+    const email=document.getElementById("email").value.trim();
+    const password=document.getElementById("password").value;
+
+    if(!email || !password){
+        message("Digite e-mail e senha.");
+        return;
+    }
+
+    if(password.length < 6){
+        message("A senha precisa ter pelo menos 6 caracteres.");
+        return;
+    }
+
+    message("Criando conta...");
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+"/auth/v1/signup",
+            {
+                method:"POST",
+                headers:{
+                    "apikey":SUPABASE_KEY,
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data=await r.json();
+
+        if(!r.ok){
+            message(data.msg || data.error_description || "Não foi possível criar a conta.");
+            return;
+        }
+
+        if(data.access_token && data.user){
+            session.token=data.access_token;
+            session.refresh=data.refresh_token || "";
+            session.user=data.user;
+
+            syncNativeSession();
+
+            document.getElementById("loginScreen").style.display="none";
+            document.getElementById("desktop").style.display="block";
+        }else{
+            message("Conta criada. Confirme o e-mail e depois entre.");
+        }
+
+    }catch(e){
+        message("Erro de conexão com a nuvem.");
+    }
+}
+
+function syncNativeSession(){
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.setCloudSession &&
+       session.user){
+
+        CloudForgeAndroid.setCloudSession(
+            SUPABASE_URL,
+            SUPABASE_KEY,
+            session.token,
+            session.user.id
+        );
+    }
+}
+
+function logout(){
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.clearCloudSession){
+        CloudForgeAndroid.clearCloudSession();
+    }
+
+    session={
+        token:"",
+        refresh:"",
+        user:null
+    };
+
+    closeAllWindows();
+
+    document.getElementById("desktop").style.display="none";
+    document.getElementById("loginScreen").style.display="flex";
+
+    message("Sessão encerrada.");
+}
+
+function authHeaders(extra={}){
+    return Object.assign({
+        "apikey":SUPABASE_KEY,
+        "Authorization":"Bearer "+session.token
+    },extra);
+}
+
+/* CLOUD FILES */
+
+async function loadFiles(){
+
+    if(!session.user) return;
+
+    const files=document.getElementById("filesList");
+    const downloads=document.getElementById("downloadsList");
+
+    files.innerHTML='<div class="empty">Carregando...</div>';
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+"/storage/v1/object/list/cloudforge",
+            {
+                method:"POST",
+                headers:authHeaders({
+                    "Content-Type":"application/json"
+                }),
+                body:JSON.stringify({
+                    prefix:session.user.id+"/",
+                    limit:100,
+                    offset:0,
+                    sortBy:{
+                        column:"created_at",
+                        order:"desc"
+                    }
+                })
+            }
+        );
+
+        const data=await r.json();
+
+        if(!r.ok){
+            files.innerHTML='<div class="empty">Não foi possível carregar os arquivos.</div>';
+            return;
+        }
+
+        renderFiles(data);
+
+        if(downloads){
+            downloads.innerHTML=files.innerHTML;
+        }
+
+    }catch(e){
+        files.innerHTML='<div class="empty">Erro ao acessar a nuvem.</div>';
+    }
+}
+
+function renderFiles(data){
+
+    const box=document.getElementById("filesList");
+
+    if(!Array.isArray(data) || data.length===0){
+        box.innerHTML='<div class="empty">Nenhum arquivo na nuvem.</div>';
+        return;
+    }
+
+    box.innerHTML="";
+
+    data.forEach(item=>{
+
+        if(!item.name) return;
+
+        const row=document.createElement("div");
+        row.className="fileRow";
+
+        const name=document.createElement("div");
+        name.className="fileName";
+        name.textContent="☁ "+item.name;
+
+        const del=document.createElement("button");
+        del.className="deleteButton";
+        del.textContent="Excluir";
+
+        del.onclick=()=>deleteCloudFile(item.name);
+
+        row.appendChild(name);
+        row.appendChild(del);
+
+        box.appendChild(row);
+    });
+}
+
+function pickCloudFile(){
+
+    if(!session.user){
+        alert("Faça login primeiro.");
+        return;
+    }
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.pickCloudFile){
+
+        CloudForgeAndroid.pickCloudFile();
+    }else{
+        alert("Seletor de arquivos disponível no aplicativo Android.");
+    }
+}
+
+window.cloudUploadResult=function(success,message){
+
+    if(success){
+        loadFiles();
+        alert("Arquivo enviado para a nuvem.");
+    }else{
+        alert(message || "Falha no upload.");
+    }
+};
+
+async function deleteCloudFile(name){
+
+    if(!session.user || !name) return;
+
+    if(!confirm("Mover este arquivo para a lixeira?")){
+        return;
+    }
+
+    const fullName=session.user.id+"/"+name;
+
+    try{
+        await fetch(
+            SUPABASE_URL+"/rest/v1/cloudforge_trash",
+            {
+                method:"POST",
+                headers:authHeaders({
+                    "Content-Type":"application/json",
+                    "Prefer":"return=minimal"
+                }),
+                body:JSON.stringify({
+                    user_id:session.user.id,
+                    item_type:"file",
+                    item_key:fullName,
+                    item_name:name
+                })
+            }
+        );
+
+        const r=await fetch(
+            SUPABASE_URL+"/storage/v1/object/cloudforge",
+            {
+                method:"DELETE",
+                headers:authHeaders({
+                    "Content-Type":"application/json"
+                }),
+                body:JSON.stringify({
+                    prefixes:[fullName]
+                })
+            }
+        );
+
+        if(!r.ok){
+            alert("Não foi possível excluir o arquivo.");
+            return;
+        }
+
+        loadFiles();
+
+    }catch(e){
+        alert("Erro ao acessar a nuvem.");
+    }
+}
+
+/* NOTES */
+
+async function loadNotes(){
+
+    if(!session.user) return;
+
+    const box=document.getElementById("notesText");
+    box.value="Carregando...";
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+
+            "/rest/v1/cloudforge_notes?select=content&user_id=eq."+
+            encodeURIComponent(session.user.id)+
+            "&limit=1",
+            {
+                headers:authHeaders()
+            }
+        );
+
+        const data=await r.json();
+
+        if(r.ok && Array.isArray(data) && data.length){
+            box.value=data[0].content || "";
+        }else{
+            box.value="";
+        }
+
+    }catch(e){
+        box.value="";
+    }
+}
+
+async function saveNotes(){
+
+    if(!session.user) return;
+
+    const content=document.getElementById("notesText").value;
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+
+            "/rest/v1/cloudforge_notes?on_conflict=user_id",
+            {
+                method:"POST",
+                headers:authHeaders({
+                    "Content-Type":"application/json",
+                    "Prefer":"resolution=merge-duplicates,return=minimal"
+                }),
+                body:JSON.stringify({
+                    user_id:session.user.id,
+                    content:content,
+                    updated_at:new Date().toISOString()
+                })
+            }
+        );
+
+        if(r.ok){
+            alert("Nota salva na nuvem.");
+        }else{
+            alert("Não foi possível salvar a nota.");
+        }
+
+    }catch(e){
+        alert("Erro ao acessar a nuvem.");
+    }
+}
+
+/* TRASH */
+
+async function loadTrash(){
+
+    if(!session.user) return;
+
+    const box=document.getElementById("trashList");
+    box.innerHTML='<div class="empty">Carregando...</div>';
+
+    try{
+        const r=await fetch(
+            SUPABASE_URL+
+            "/rest/v1/cloudforge_trash?select=id,item_type,item_name,created_at&order=created_at.desc",
+            {
+                headers:authHeaders()
+            }
+        );
+
+        const data=await r.json();
+
+        if(!r.ok || !Array.isArray(data)){
+            box.innerHTML='<div class="empty">Não foi possível carregar a lixeira.</div>';
+            return;
+        }
+
+        if(data.length===0){
+            box.innerHTML='<div class="empty">A lixeira está vazia.</div>';
+            return;
+        }
+
+        box.innerHTML="";
+
+        data.forEach(item=>{
+            const row=document.createElement("div");
+            row.className="fileRow";
+
+            const text=document.createElement("div");
+            text.className="fileName";
+            text.textContent="🗑 "+(item.item_name || "Item removido");
+
+            row.appendChild(text);
+            box.appendChild(row);
+        });
+
+    }catch(e){
+        box.innerHTML='<div class="empty">Erro ao acessar a nuvem.</div>';
+    }
+}
+
+/* ANDROID */
+
+function openExternal(url){
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.openExternal){
+
+        CloudForgeAndroid.openExternal(url);
+    }else{
+        window.location.href=url;
+    }
+}
+
+function openAndroidSettings(){
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.openAndroidSettings){
+
+        CloudForgeAndroid.openAndroidSettings();
+    }
+}
+
+function manageApp(packageName){
+
+    if(window.CloudForgeAndroid &&
+       CloudForgeAndroid.manageApp){
+
+        CloudForgeAndroid.manageApp(packageName);
+    }
+}
+
+function goBrowser(){
+
+    let url=document.getElementById("browserAddress").value.trim();
+
+    if(!/^https?:\/\//i.test(url)){
+        url="https://"+url;
+    }
+
+    openExternal(url);
+}
+
+/* WINDOWS */
+
+function openWindow(id){
+    const w=document.getElementById(id);
+    if(w) w.style.display="block";
+    document.getElementById("startMenu").style.display="none";
+}
+
+function closeWindow(id){
+    const w=document.getElementById(id);
+    if(w) w.style.display="none";
+}
+
+function minimizeWindow(id){
+    closeWindow(id);
+}
+
+function maximizeWindow(id){
+
+    const w=document.getElementById(id);
+    if(!w) return;
+
+    if(w.dataset.maximized==="1"){
+        w.style.width="78%";
+        w.style.height="70%";
+        w.style.left="11%";
+        w.style.top="10%";
+        w.dataset.maximized="0";
+    }else{
+        w.style.width="100%";
+        w.style.height="calc(100% - 44px)";
+        w.style.left="0";
+        w.style.top="0";
+        w.dataset.maximized="1";
+    }
+}
+
+function closeAllWindows(){
+    document.querySelectorAll(".window").forEach(
+        w=>w.style.display="none"
+    );
+}
+
+function toggleStart(){
+    const m=document.getElementById("startMenu");
+    m.style.display=
+        m.style.display==="block" ? "none" : "block";
+}
+
+/* CALCULATOR */
+
+function calc(v){
+    document.getElementById("calcDisplay").value+=v;
+}
+
+function clearCalc(){
+    document.getElementById("calcDisplay").value="";
+}
+
+function calculate(){
+
+    const d=document.getElementById("calcDisplay");
+
+    try{
+        const expression=d.value;
+
+        if(!/^[0-9+\-*/.() ]+$/.test(expression)){
+            throw new Error();
+        }
+
+        d.value=Function(
+            '"use strict";return ('+expression+')'
+        )();
+
+    }catch(e){
+        d.value="Erro";
+    }
+}
+
+/* CLOCK */
+
+function updateClock(){
+
+    const now=new Date();
+
+    document.getElementById("clock").innerHTML=
+        now.toLocaleTimeString(
+            "pt-BR",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/* VIRTUAL CURSOR */
+
+let cursorX=window.innerWidth/2;
+let cursorY=window.innerHeight/2;
+
+let lastTouchX=0;
+let lastTouchY=0;
+let touching=false;
+let moved=false;
+let downTime=0;
+
+const cursor=document.getElementById("cursor");
+
+function drawCursor(){
+    cursor.style.left=cursorX+"px";
+    cursor.style.top=cursorY+"px";
+}
+
+drawCursor();
+
+document.addEventListener(
+    "touchstart",
+    function(e){
+
+        if(e.touches.length!==1) return;
+
+        const t=e.touches[0];
+
+        lastTouchX=t.clientX;
+        lastTouchY=t.clientY;
+
+        touching=true;
+        moved=false;
+        downTime=Date.now();
+    },
+    {passive:true}
+);
+
+document.addEventListener(
+    "touchmove",
+    function(e){
+
+        if(!touching || e.touches.length!==1) return;
+
+        const t=e.touches[0];
+
+        const dx=t.clientX-lastTouchX;
+        const dy=t.clientY-lastTouchY;
+
+        if(Math.abs(dx)>1 || Math.abs(dy)>1){
+            moved=true;
+        }
+
+        cursorX+=dx*1.35;
+        cursorY+=dy*1.35;
+
+        cursorX=Math.max(
+            0,
+            Math.min(window.innerWidth-20,cursorX)
+        );
+
+        cursorY=Math.max(
+            0,
+            Math.min(window.innerHeight-25,cursorY)
+        );
+
+        lastTouchX=t.clientX;
+        lastTouchY=t.clientY;
+
+        drawCursor();
+    },
+    {passive:true}
+);
+
+document.addEventListener(
+    "touchend",
+    function(){
+
+        if(!touching) return;
+
+        const elapsed=Date.now()-downTime;
+
+        touching=false;
+
+        if(!moved && elapsed<450){
+
+            const element=
+                document.elementFromPoint(
+                    cursorX,
+                    cursorY
+                );
+
+            if(element && element!==cursor){
+                element.click();
+            }
+        }
+    },
+    {passive:true}
+);
+</script>
+
+</body>
+</html>.start{position:absolute;left:50%;bottom:68px;transform:translateX(-50%);width:min(590px,90vw);height:min(500px,72vh);background:#101a2bef;border:1px solid #ffffff22;border-radius:15px;backdrop-filter:blur(25px);padding:22px;display:none;box-shadow:0 25px 80px #000a}
 .start.show{display:block}
 .search{background:#091221;border:1px solid #ffffff20;border-radius:9px;padding:12px;color:#aab7ca}
 .apps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}
